@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "mimosa-hook-status/v1",
+  "recordedAt": "2026-09-04T18:58:31.305Z",
+  "sessionId": "sess_ea02f828-5b18-4686-8f7f-b6d7bc583ff7",
+  "event": "PostToolUse",
+  "toolName": "Write",
+  "file": "C:\\Users\\Пользователь\\Desktop\\саиты\\imperia-auto\\js\\app.js",
+  "outcome": "inconclusive",
+  "coverage": "partial",
+  "findingCount": 0,
+  "durationMs": 14,
+  "hostState": "hook_complete",
+  "reportHint": ".mimosa/reports/"
+}

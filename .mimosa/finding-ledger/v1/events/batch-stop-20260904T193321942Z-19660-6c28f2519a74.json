@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "mimosa-finding-ledger-batch/v1",
+  "batchId": "stop-20260904T193321942Z-19660-6c28f2519a74",
+  "runId": "20260904T193321942Z-19660-6c28f2519a74",
+  "runStatus": "inconclusive",
+  "coverage": {
+    "status": "partial",
+    "reasons": [
+      {
+        "code": "baseline_partial",
+        "stage": "baseline",
+        "target": ".",
+        "detail": "baseline capture had enumeration or snapshot errors",
+        "affectsCompletion": true
+      },
+      {
+        "code": "scanner_failed",
+        "stage": "scan",
+        "target": "js/scene.js",
+        "detail": "spawnSync C:\\Program Files\\nodejs\\node.exe ETIMEDOUT",
+        "affectsCompletion": true
+      },
+      {
+        "code": "scanner_failed",
+        "stage": "scan",
+        "target": "js/app.js",
+        "detail": "spawnSync C:\\Program Files\\nodejs\\node.exe ETIMEDOUT",
+        "affectsCompletion": true
+      },
+      {
+        "code": "project_check_failed",
+        "stage": "baseline",
+        "target": ".",
+        "detail": "baseline_partial: baseline capture had enumeration or snapshot errors",
+        "affectsCompletion": true
+      },
+      {
+        "code": "project_check_failed",
+        "stage": "scan",
+        "target": "js/scene.js",
+        "detail": "scanner_failed: spawnSync C:\\Program Files\\nodejs\\node.exe ETIMEDOUT",
+        "affectsCompletion": true
+      },
+      {
+        "code": "project_check_failed",
+        "stage": "scan",
+        "target": "js/app.js",
+        "detail": "scanner_failed: spawnSync C:\\Program Files\\nodejs\\node.exe ETIMEDOUT",
+        "affectsCompletion": true
+      }
+    ]
+  },
+  "source": {
+    "component": "zcode-hook",
+    "operationId": "Stop"
+  },
+  "revision": null,
+  "diffHash": "a1254eb66b63f748a069973e0fa2cc4b22eea4f6d29317645c75a3eeb9793f7c",
+  "rulesVersion": "unavailable",
+  "sessionHash": "b831922a814c1df497be4ff3c69c29298267d7f76d11f612ea6914ee61180a2c",
+  "reportRef": ".mimosa/reports/task-review-sess_ea02f828-5b18-4686-8f7f-b6d7bc583ff7-20260904T193321942Z-19660-6c28f2519a74.json",
+  "events": [
+    {
+      "eventId": "hook-92eb5590c828bd12205c39a943e6e9ca",
+      "findingId": "mimosa-f3541e9a7eb3624eab5527a5",
+      "type": "finding_observed",
+      "at": "2026-09-04T19:01:35.503Z",
+      "identity": {
+        "projectRelativeFile": "js/scene.js",
+        "ruleId": "security",
+        "codeEvidenceHash": "ebe7e25e286b4748cf9e079e1bd3762640c7eaf4f69046261b47116eb4ea4396",
+        "confidence": "stable"
+      },
+      "scope": "direct",
+      "line": 353,
+      "endLine": 353,
+      "reasonCode": "advisory",
+      "reportedToAgent": true,
+      "evidence": {
+        "kind": "source",
+        "boundary": "candidate",
+        "producer": "deterministic",
+        "evidenceHash": "ebe7e25e286b4748cf9e079e1bd3762640c7eaf4f69046261b47116eb4ea4396"
+      },
+      "sequence": 0
+    }
+  ],
+  "observedFindingIds": [],
+  "verifiedFiles": [],
+  "recordedAt": "2026-09-04T19:33:23.181Z"
+}

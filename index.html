@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИМПЕРИЯ АВТО, официальный дилер VOYAH и LI AUTO</title>
+<meta name="description" content="Дилерский центр электромобилей и range-гибридов VOYAH и LI AUTO. В наличии FREE, L9, ZHUIGUANG, DREAM. Трейд-ин +300 000 ₽, кредит от 0,01%, тест-драйв в день обращения.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080b'/%3E%3Cpath d='M8 22 L16 9 L24 22 M12.5 17.5 h7' stroke='%23d8b077' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-act="0">
+
+<!-- ================= ПРЕЛОАДЕР ================= -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__mark">
+    <svg viewBox="0 0 32 32" class="loader__logo"><path d="M8 22 L16 9 L24 22 M12.5 17.5 h7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>ИМПЕРИЯ&nbsp;АВТО</span>
+  </div>
+  <div class="loader__num"><span id="loadNum">000</span><i>%</i></div>
+  <div class="loader__bar"><i id="loadBar"></i></div>
+  <p class="loader__hint">прогреваем студийный свет</p>
+</div>
+
+<!-- ================= 3D СЦЕНА ================= -->
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ================= КУРСОР ================= -->
+<div class="cursor" id="cursor" aria-hidden="true"><i class="cursor__dot"></i><i class="cursor__ring"></i></div>
+
+<!-- ================= ШАПКА ================= -->
+<header class="hdr" id="hdr">
+  <a class="hdr__logo" href="#top" aria-label="Империя Авто, на главную">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 22 L16 9 L24 22 M12.5 17.5 h7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <b>ИМПЕРИЯ<em>АВТО</em></b>
+  </a>
+  <nav class="hdr__nav" aria-label="Основная навигация">
+    <a href="#act-free">Автомобили</a>
+    <a href="#benefits">Преимущества</a>
+    <a href="#testdrive">Тест-драйв</a>
+    <a href="#contacts">Контакты</a>
+  </nav>
+  <div class="hdr__right">
+    <a class="hdr__phone" href="tel:+74951204567">+7 495 120-45-67</a>
+    <a class="btn btn--sm" href="#testdrive" data-mag><span>Тест-драйв</span></a>
+    <button class="hdr__burger" id="burger" aria-label="Открыть меню" aria-expanded="false"><i></i><i></i></button>
+  </div>
+</header>
+<div class="mnav" id="mnav">
+  <nav aria-label="Мобильная навигация">
+    <a href="#act-free">Автомобили</a>
+    <a href="#benefits">Преимущества</a>
+    <a href="#testdrive">Тест-драйв</a>
+    <a href="#contacts">Контакты</a>
+    <a class="mnav__tel" href="tel:+74951204567">+7 495 120-45-67</a>
+  </nav>
+</div>
+
+<!-- ================= РЕЛЬС ПРОГРЕССА ================= -->
+<aside class="rail" id="rail" aria-label="Модели на сцене">
+  <button data-goto="0"><i></i><span>01 · FREE</span></button>
+  <button data-goto="1"><i></i><span>02 · L9</span></button>
+  <button data-goto="2"><i></i><span>03 · ZHUIGUANG</span></button>
+  <button data-goto="3"><i></i><span>04 · DREAM</span></button>
+</aside>
+
+<main id="top">
+
+  <!-- ============ АКТ 01 · VOYAH FREE (герой) ============ -->
+  <section class="act act--free" id="act-free" data-car="0">
+    <div class="act__inner">
+      <div class="hero">
+        <p class="chip rv" data-d="0"><i></i>Официальный дилер VOYAH и LI AUTO</p>
+        <h1 class="hero__h">
+          <span class="ln"><i>Будущее</i></span>
+          <span class="ln"><i>уже <b>в наличии</b></i></span>
+        </h1>
+        <p class="hero__sub rv" data-d="2">Электромобили и range-гибриды с ПТС, к сегодняшнему визиту.
+Эксклюзивные комплектации, трейд-ин с бонусом до 300 000 ₽ и кредит от 0,01%.</p>
+        <div class="hero__cta rv" data-d="3">
+          <a class="btn btn--pri" href="#testdrive" data-mag><span>Записаться на тест-драйв</span></a>
+          <a class="btn btn--gh" href="#act-l9" data-mag><span>Следующая модель</span><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1v11M2.5 8 7 12.5 11.5 8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+      <div class="hero__carinfo rv" data-d="5">
+        <p class="hero__carinfo-name">VOYAH FREE · кросс-купе</p>
+        <p class="hero__carinfo-price">от 6 190 000 ₽</p>
+      </div>
+      <div class="hint" aria-hidden="true">
+        <svg class="hint__arr" width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v11M3.5 9 8 13.5 12.5 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Листайте: <b>LI AUTO L9</b> уже выезжает на сцену</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ АКТ 02 · LI AUTO L9 ============ -->
+  <section class="act act--l9" id="act-l9" data-car="1">
+    <div class="act__inner">
+      <span class="ghost" aria-hidden="true">02</span>
+      <div class="card card--rt">
+        <p class="card__brand rv" data-d="0">флагманский SUV · range-гибрид</p>
+        <h2 class="card__name rv" data-d="1">LI AUTO L9</h2>
+        <p class="card__tag rv" data-d="2">Семь мест. И ни одного компромисса.</p>
+        <p class="card__note rv" data-d="3">Запас хода 1 315 км с бензогенератором: электричество в городе,
+бензин в дальней дороге. Заряжаться можно вообще без розетки.</p>
+        <div class="card__row rv" data-d="4">
+          <div class="price"><small>от</small><b>8 990 000</b><small>₽</small></div>
+          <div class="swatches" data-car="1" role="group" aria-label="Цвет кузова">
+            <button class="sw on" style="--c:#dfe3e6" data-c="#dfe3e6" aria-label="Ледяной жемчуг"></button>
+            <button class="sw" style="--c:#15161a" data-c="#15161a" aria-label="Чёрный агат"></button>
+            <button class="sw" style="--c:#2c3a33" data-c="#2c3a33" aria-label="Зелёный хвойный"></button>
+          </div>
+        </div>
+        <a class="btn btn--pri btn--card rv" data-d="5" href="#testdrive" data-mag><span>Тест-драйв L9</span></a>
+      </div>
+      <ul class="strip rv" data-d="2">
+        <li><b>549</b><span>л.с. · полный привод</span></li>
+        <li><b>5,3</b><span>с до 100 км/ч</span></li>
+        <li><b>1315</b><span>км запаса хода*</span></li>
+        <li><b>7</b><span>мест · 6 экранов</span></li>
+      </ul>
+      <p class="foot rv" data-d="3">* CLTC, с учётом бензогенератора (EREV)</p>
+    </div>
+  </section>
+
+  <!-- ============ АКТ 03 · VOYAH ZHUIGUANG ============ -->
+  <section class="act act--zh" data-car="2">
+    <div class="act__inner">
+      <span class="ghost ghost--c" aria-hidden="true">03</span>
+      <div class="mid">
+        <p class="mid__brand rv" data-d="0">электрический седан</p>
+        <h2 class="mid__name"><span class="ln"><i>VOYAH</i></span><span class="ln"><i>ZHUIGUANG</i></span></h2>
+        <p class="mid__tag rv" data-d="2">Седан, ради которого оборачиваются.</p>
+      </div>
+      <div class="flank flank--l rv" data-d="3">
+        <li><b>510</b><span>л.с.</span></li>
+        <li><b>3,8</b><span>с до 100</span></li>
+      </div>
+      <div class="flank flank--r rv" data-d="4">
+        <li><b>730</b><span>км хода</span></li>
+        <li><b>CDC</b><span>подвеска</span></li>
+      </div>
+      <div class="card card--bc">
+        <div class="card__row rv" data-d="5">
+          <div class="price"><small>от</small><b>7 550 000</b><small>₽</small></div>
+          <div class="swatches" data-car="2" role="group" aria-label="Цвет кузова">
+            <button class="sw on" style="--c:#7a1420" data-c="#7a1420" aria-label="Красный закат"></button>
+            <button class="sw" style="--c:#101318" data-c="#101318" aria-label="Полночь"></button>
+            <button class="sw" style="--c:#b9bec4" data-c="#b9bec4" aria-label="Серебро"></button>
+          </div>
+        </div>
+        <a class="btn btn--pri btn--card rv" data-d="6" href="#testdrive" data-mag><span>Тест-драйв</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ АКТ 04 · VOYAH DREAM ============ -->
+  <section class="act act--dr" data-car="3">
+    <div class="act__inner">
+      <span class="ghost" aria-hidden="true">04</span>
+      <div class="card card--lb">
+        <p class="card__brand rv" data-d="0">электрический минивэн</p>
+        <h2 class="card__name rv" data-d="1">VOYAH DREAM</h2>
+        <p class="card__tag rv" data-d="2">Первый класс на колёсах.</p>
+        <ul class="specs rv" data-d="3">
+          <li><b>435</b><span>л.с.</span></li>
+          <li><b>5,9</b><span>с до 100</span></li>
+          <li><b>605</b><span>км хода</span></li>
+          <li><b>2-й ряд</b><span>театр и холодильник</span></li>
+        </ul>
+        <div class="card__row rv" data-d="4">
+          <div class="price"><small>от</small><b>8 490 000</b><small>₽</small></div>
+          <div class="swatches" data-car="3" role="group" aria-label="Цвет кузова">
+            <button class="sw on" style="--c:#17233f" data-c="#17233f" aria-label="Полночная синь"></button>
+            <button class="sw" style="--c:#dfdcd2" data-c="#dfdcd2" aria-label="Жемчуг"></button>
+            <button class="sw" style="--c:#4a3320" data-c="#4a3320" aria-label="Виски"></button>
+          </div>
+        </div>
+        <a class="btn btn--pri btn--card rv" data-d="5" href="#testdrive" data-mag><span>Тест-драйв</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ФИНАЛ ПУСТОЙ СЦЕНЫ ============ -->
+  <section class="outro" id="outro">
+    <div class="outro__inner">
+      <p class="outro__over rv" data-d="0">четыре модели в наличии</p>
+      <h2 class="outro__h"><span class="ln"><i>ИМПЕРИЯ</i></span><span class="ln"><i>АВТО</i></span></h2>
+      <p class="outro__sub rv" data-d="2">Ваша уже на тест-драйве. Осталось выбрать день.</p>
+      <div class="rv" data-d="3"><a class="btn btn--pri" href="#testdrive" data-mag><span>Записаться на тест-драйв</span></a></div>
+    </div>
+  </section>
+
+  <!-- ============ КИНО-ОСМОТР (покадровая прокрутка) ============ -->
+  <section class="cinema" id="cinema">
+    <div class="cinema__sticky">
+      <canvas id="cinemaCanvas" aria-hidden="true"></canvas>
+      <div class="cinema__veil" aria-hidden="true"></div>
+      <div class="cinema__ui">
+        <p class="cinema__over rv" data-d="0"><i></i>кино-осмотр · облёт камерой</p>
+        <h2 class="cinema__h"><span class="ln"><i>Обойти кругом,</i></span><span class="ln"><i>не <b>вставая</b></i></span></h2>
+        <p class="cinema__sub rv" data-d="2">120 кадров облёта, сгенерированных нейросетью.
+        Прокрутите и рассмотрите каждую грань кузова при студийном свете.</p>
+      </div>
+      <div class="cinema__load" id="cinLoad" aria-hidden="true"><i></i><span>загрузка кадров 0%</span></div>
+      <div class="cinema__prog" aria-hidden="true"><i id="cinProg"></i></div>
+    </div>
+  </section>
+
+  <!-- ============ БЕГУЩАЯ СТРОКА ============ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__row">
+      <span>VOYAH FREE</span><i>✦</i><span>LI AUTO L9</span><i>✦</i><span>VOYAH ZHUIGUANG</span><i>✦</i><span>VOYAH DREAM</span><i>✦</i><span>ТРЕЙД-ИН +300 000 ₽</span><i>✦</i><span>КРЕДИТ 0,01%</span><i>✦</i>
+      <span>VOYAH FREE</span><i>✦</i><span>LI AUTO L9</span><i>✦</i><span>VOYAH ZHUIGUANG</span><i>✦</i><span>VOYAH DREAM</span><i>✦</i><span>ТРЕЙД-ИН +300 000 ₽</span><i>✦</i><span>КРЕДИТ 0,01%</span><i>✦</i>
+    </div>
+  </div>
+
+  <!-- ============ ПРЕИМУЩЕСТВА ============ -->
+  <section class="solid benefits" id="benefits">
+    <div class="sec">
+      <p class="sec__over rv" data-d="0">почему империя</p>
+      <h2 class="sec__h rv" data-d="1">Покупка как <b>тест-драйв</b>:<br>быстро, приятно, без сюрпризов</h2>
+      <div class="bento">
+        <article class="bcard bcard--hi rv" data-d="1" style="--sp:span 4">
+          <span class="bcard__ghost" aria-hidden="true">+300К</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h6l2 3h8M20 7l-2.5 8.5H7L4 7zM9 19.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Трейд-ин +300 000 ₽</h3>
+          <p>Оценим ваш автомобиль за 30 минут и добавим бонус к рыночной цене, сверх трейд-ина.</p>
+        </article>
+        <article class="bcard bcard--hi2 rv" data-d="2" style="--sp:span 4">
+          <span class="bcard__ghost" aria-hidden="true">0,01%</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 3.5 20.5 6 18 8.5M6 20.5 3.5 18 6 15.5M3.5 6 6 3.5 8.5 6M20.5 18 18 20.5 15.5 18M3.5 6h6M20.5 18h-6M20.5 6 14.5 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Кредит от 0,01%</h3>
+          <p>Одобрение за 15 минут по паспорту. Первый платёж через 60 дней после покупки.</p>
+        </article>
+        <article class="bcard rv" data-d="3" style="--sp:span 4">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.4 3 8.4 7 9.5 4-1.1 7-5.1 7-9.5V6l-7-3zM9 12l2.2 2.2L15.5 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Гарантия 5 лет</h3>
+          <p>Или 150 000 км, включая батарею и электромоторы. Сервисная зона на 14 постов.</p>
+        </article>
+        <article class="bcard rv" data-d="2" style="--sp:span 4">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 15.5h14v-9h-14zM16.5 10.5h3l2 3v2h-5M6 19.5a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6zm10.5 0a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Доставка за 7 дней</h3>
+          <p>Из наличия в ваш город, на автовозе или своим ходом. Сопровождение по документам.</p>
+        </article>
+        <article class="bcard rv" data-d="3" style="--sp:span 4">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM15 3v4h4M9.5 13h6M9.5 16.5h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Постановка на учёт</h3>
+          <p>Госуслуги, ОСАГО и номера, не выходя из салона. Забираете машину уже на учёте.</p>
+        </article>
+        <article class="bcard rv" data-d="4" style="--sp:span 4">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0M4 13v4.5h3.5V13M20 13v4.5h-3.5V13M4 17.5A2.5 2.5 0 0 0 6.5 20h.9M20 17.5A2.5 2.5 0 0 1 17.5 20h-.9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>Команда 24/7</h3>
+          <p>Персональный менеджер, мастер и консьерж службы: один звонок в любое время.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ЦИФРЫ ============ -->
+  <section class="solid stats">
+    <div class="sec sec--tight">
+      <ul class="stats__grid">
+        <li class="rv" data-d="1"><b class="count" data-to="12">0</b><span>лет на рынке</span></li>
+        <li class="rv" data-d="2"><b class="count" data-to="5000" data-suf="+">0</b><span>проданных авто</span></li>
+        <li class="rv" data-d="3"><b class="count" data-to="98" data-suf="%">0</b><span>рекомендуют нас</span></li>
+        <li class="rv" data-d="4"><b class="count" data-to="40">0</b><span>авто в наличии сегодня</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ ТЕСТ-ДРАЙВ ============ -->
+  <section class="solid td" id="testdrive">
+    <div class="sec td__grid">
+      <div class="td__copy">
+        <p class="sec__over rv" data-d="0">тест-драйв за 60 секунд</p>
+        <h2 class="sec__h rv" data-d="1">Ваш вечер.<br><b>Наш автомобиль.</b></h2>
+        <ol class="td__steps">
+          <li class="rv" data-d="2"><i>01</i><div><b>Оставляете заявку</b><span>имя и телефон, этого достаточно</span></div></li>
+          <li class="rv" data-d="3"><i>02</i><div><b>Звоним за 15 минут</b><span>подбираем время и маршрут</span></div></li>
+          <li class="rv" data-d="4"><i>03</i><div><b>Автомобиль ждёт вас</b><span>прогрет, заряжен, с полным баком кофе</span></div></li>
+        </ol>
+      </div>
+      <form class="tform rv" data-d="2" id="tdForm" novalidate>
+        <div class="tform__head"><p>Запись на тест-драйв</p><span>30-40 минут · без обязательств</span></div>
+        <label class="fld">
+          <span>Имя</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться" required>
+          <em>Пожалуйста, представьтесь</em>
+        </label>
+        <label class="fld">
+          <span>Телефон</span>
+          <input type="tel" name="phone" autocomplete="tel" placeholder="+7 ___ ___-__-__" required>
+          <em>Укажите телефон, перезвоним</em>
+        </label>
+        <label class="fld fld--sel">
+          <span>Модель</span>
+          <select name="model">
+            <option>Пока выбираю, посоветуйте</option>
+            <option>VOYAH FREE · кросс-купе</option>
+            <option>LI AUTO L9 · флагман SUV</option>
+            <option>VOYAH ZHUIGUANG · седан</option>
+            <option>VOYAH DREAM · минивэн</option>
+          </select>
+          <svg viewBox="0 0 14 8" aria-hidden="true"><path d="M1 1l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </label>
+        <label class="chk"><input type="checkbox" name="agree" checked><i></i><span>Согласен на обработку персональных данных</span></label>
+        <button class="btn btn--pri btn--full" type="submit" data-mag>
+          <span class="s1">Записаться на тест-драйв</span>
+          <span class="s2">Заявка принята<span class="chk-ic"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+        </button>
+        <p class="tform__ok">Перезвоним в течение 15 минут, ежедневно до 21:00.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ ФУТЕР ============ -->
+  <footer class="solid foot" id="contacts">
+    <div class="sec">
+      <div class="foot__grid">
+        <div class="foot__brand">
+          <a class="hdr__logo hdr__logo--f" href="#top">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 22 L16 9 L24 22 M12.5 17.5 h7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <b>ИМПЕРИЯ<em>АВТО</em></b>
+          </a>
+          <p>Официальный дилерский центр электромобилей и range-гибридов. Москва, Кутузовский проспект, 24, ежедневно 9:00-21:00.</p>
+        </div>
+        <nav class="foot__nav" aria-label="Навигация по сайту">
+          <p>Навигация</p>
+          <a href="#act-free">Автомобили</a>
+          <a href="#benefits">Преимущества</a>
+          <a href="#testdrive">Тест-драйв</a>
+          <a href="#top">Наверх</a>
+        </nav>
+        <div class="foot__cont">
+          <p>Контакты</p>
+          <a href="tel:+74951204567">+7 495 120-45-67</a>
+          <a href="mailto:sale@imperia-auto.ru">sale@imperia-auto.ru</a>
+          <div class="foot__soc">
+            <a href="#" aria-label="Телеграм">TG</a><a href="#" aria-label="Ватсап">WA</a><a href="#" aria-label="Ютуб">YT</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot__bar">
+        <p>© 2026 ИМПЕРИЯ АВТО · Информация не является публичной офертой</p>
+        <p>Изображения автомобилей: стилизованная 3D-визуализация</p>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script src="vendor/three.min.js"></script>
+<script src="js/scene.js"></script>
+<script src="media/cinema/manifest.js"></script>
+<script src="js/cinema.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

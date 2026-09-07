@@ -1,0 +1,6 @@
+# секреты
+tools/api-key.txt
+.deploy/
+
+# тяжёлые исходники медиа (кадры для сайта — в media/cinema, они нужны)
+media/src/
