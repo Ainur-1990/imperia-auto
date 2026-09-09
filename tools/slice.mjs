@@ -41,8 +41,15 @@ execFileSync('ffmpeg', [
 ], { stdio: 'inherit' });
 
 const count = readdirSync(outDir).filter(f => f.endsWith('.webp')).length;
-writeFileSync(resolve(outDir, 'manifest.js'),
+const key = outArg.split('/').filter(Boolean).pop();
+const rel = outArg.replace(/\\/g, '/').replace(/\/$/, '') + '/';
+const manifest =
   `/* манифест нарезки: обновляется tools/slice.mjs */\n` +
-  `window.__CINEMA = { dir: '${outArg.replace(/\\/g, '/')}/', count: ${count}, pad: 3, ext: '.webp' };\n`);
+  `window.__SEQ = window.__SEQ || {};\n` +
+  `window.__SEQ['${key}'] = { dir: '${rel}', count: ${count}, pad: 3, ext: '.webp' };\n` +
+  (key === 'cinema'
+    ? `window.__CINEMA = { dir: '${rel}', count: ${count}, pad: 3, ext: '.webp' };\n`
+    : '');
+writeFileSync(resolve(outDir, 'manifest.js'), manifest);
 
-console.log(`✓ ${count} кадров в ${outArg}, manifest.js обновлён`);
+console.log(`✓ ${count} кадров в ${outArg}, manifest.js обновлён (ключ ${key})`);

@@ -1,5 +1,6 @@
 /* ============================================================
    ИМПЕРИЯ АВТО — оркестрация: прелоадер, скролл, курсор, UI
+   Сцена: SeqStage (реальные кадры облёта) + кино-осмотр
    ============================================================ */
 (function () {
 'use strict';
@@ -26,10 +27,12 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-/* ---------------- сцена ---------------- */
-const show = new ImperiaShowroom($('#stage'));
-show.setReduced(RM);
-window.__show = show;
+/* ---------------- сцена на кадрах ---------------- */
+const show = window.SeqStage ? new SeqStage($('#seqStage')) : null;
+if (show) {
+  show.setReduced(RM);
+  window.__stage = show;
+}
 
 /* ---------------- метрики скролла ---------------- */
 const acts = $$('.act');
@@ -45,18 +48,18 @@ function measure() {
 }
 function resize() {
   measure();
-  show.resize(W, H, devicePixelRatio || 1);
+  if (show) show.resize(W, H, devicePixelRatio || 1);
 }
 resize();
 addEventListener('load', measure, { passive: true });
 addEventListener('resize', resize, { passive: true });
 
-/* ---------------- указатель → камера + курсор ---------------- */
+/* ---------------- указатель → ракурс + курсор ---------------- */
 const cursor = { tx: W / 2, ty: H / 2, x: W / 2, y: H / 2 };
 const cursorEl = $('#cursor');
 
 addEventListener('pointermove', e => {
-  show.setPointer((e.clientX / W) * 2 - 1, (e.clientY / H) * 2 - 1);
+  if (show) show.setPointer((e.clientX / W) * 2 - 1, (e.clientY / H) * 2 - 1);
   cursor.tx = e.clientX;
   cursor.ty = e.clientY;
 }, { passive: true });
@@ -72,15 +75,12 @@ if (document.fonts && document.fonts.ready) {
 } else progress.fonts = 1;
 setTimeout(() => { progress.time = 1; }, 1050);
 
-requestAnimationFrame(() => {
-  show.tick(0.016, scrollY, tops, H, outroTop);
-  progress.scene = 1;
-});
-/* фолбэк для webview, где rAF заморожен на старте */
-setTimeout(() => { progress.scene = 1; }, 900);
+if (show) show.onFirstFrame(() => { progress.scene = 1; });
+setTimeout(() => { progress.scene = 1; }, 900); /* фолбэк webview */
 
 let loaded = false;
 function startIntro() {
+  if (!show) return;
   if (scrollY > H * 0.25) show.introSkip();
   else show.intro();
 }
@@ -96,7 +96,7 @@ function startReveals() {
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
   const targets = $$('.rv, .act__inner .ln, .outro__inner .ln, .cinema .ln');
-  // фолбэк: часть webview не доставляет IO — проверяем видимость сразу
+  /* фолбэк: часть webview не доставляет IO — проверяем видимость сразу */
   targets.forEach(el => {
     const r = el.getBoundingClientRect();
     if (r.top < innerHeight * 0.92 && r.bottom > 0) el.classList.add('in');
@@ -124,13 +124,19 @@ function startReveals() {
 }
 
 /* ---------------- главный цикл ---------------- */
+let rafAlive = false;
 let last = performance.now();
 let lastAct = -1;
 document.addEventListener('visibilitychange', () => { last = performance.now(); });
 
 const hdr = $('#hdr');
 
-let rafAlive = false;
+function localAct(sy) {
+  let act = 0;
+  for (let i = 0; i < 4; i++) if (sy >= tops[i] - 1) act = i;
+  return act;
+}
+
 function frame(now) {
   rafAlive = true;
   requestAnimationFrame(frame);
@@ -138,7 +144,7 @@ function frame(now) {
   last = now;
   const sy = scrollY;
 
-  const act = show.tick(dt, sy, tops, H, outroTop);
+  const act = show ? show.tick(dt, sy, tops, H, outroTop) : localAct(sy);
 
   if (act !== lastAct) {
     lastAct = act;
@@ -149,7 +155,7 @@ function frame(now) {
 
   hdr.classList.toggle('scrolled', sy > 30);
 
-  // затухание карточек в самом конце акта (переезд машины)
+  /* затухание карточек в самом конце акта (переезд машины) */
   acts.forEach((el, i) => {
     const fin = tops[i + 1] !== undefined ? tops[i + 1] : outroTop;
     const u = clamp01((sy - (fin - H * 0.5)) / (H * 0.5));
@@ -161,14 +167,14 @@ function frame(now) {
     }
   });
 
-  // курсор
+  /* курсор */
   if (FINE && !RM) {
     cursor.x = lerp(cursor.x, cursor.tx, 0.22);
     cursor.y = lerp(cursor.y, cursor.ty, 0.22);
     cursorEl.style.transform = 'translate(' + cursor.x + 'px,' + cursor.y + 'px)';
   }
 
-  // прелоадер
+  /* прелоадер */
   if (!loaded) {
     const p = (progress.fonts + progress.scene + progress.time) / 3;
     loadNum.textContent = String(Math.round(p * 100)).padStart(3, '0');
@@ -184,8 +190,7 @@ function frame(now) {
 }
 requestAnimationFrame(frame);
 
-/* watchdog: некоторые webview замораживают rAF, но держат таймеры —
-   тогда цикл ведёт setInterval (в обычных браузерах молчит) */
+/* watchdog: некоторые webview замораживают rAF, но держат таймеры */
 setInterval(() => {
   if (!rafAlive) frame(performance.now());
   rafAlive = false;
@@ -194,7 +199,7 @@ setInterval(() => {
 /* ---------------- курсор: ховеры ---------------- */
 if (FINE && !RM) {
   document.addEventListener('mouseover', e => {
-    const hot = e.target.closest('a,button,.sw,input,select,label.chk');
+    const hot = e.target.closest('a,button,input,select,label.chk');
     cursorEl.classList.toggle('on', !!hot);
   });
   document.addEventListener('mouseleave', () => cursorEl.classList.remove('on'));
@@ -217,18 +222,6 @@ if (FINE && !RM) {
 $$('#rail button').forEach((b, i) => {
   b.addEventListener('click', () => {
     scrollTo({ top: tops[i] + 2, behavior: RM ? 'auto' : 'smooth' });
-  });
-});
-
-/* ---------------- свотчи цвета кузова ---------------- */
-$$('.swatches').forEach(grp => {
-  const carIdx = +grp.dataset.car;
-  grp.addEventListener('click', e => {
-    const b = e.target.closest('.sw');
-    if (!b) return;
-    $$('.sw', grp).forEach(s => s.classList.remove('on'));
-    b.classList.add('on');
-    show.setPaint(carIdx, b.dataset.c);
   });
 });
 
@@ -265,7 +258,4 @@ form.addEventListener('submit', e => {
   if (!ok) return;
   form.classList.add('sent');
 });
-
-/* ---------------- освобождение ресурсов ---------------- */
-addEventListener('pagehide', () => show.dispose(), { once: true });
 })();

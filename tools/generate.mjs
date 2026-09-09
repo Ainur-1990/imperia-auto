@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const API = 'https://gptunnel.ru/api/v2';
 
-function key() {
+async function key() {
   if (process.env.GPTUNNEL_API_KEY) return process.env.GPTUNNEL_API_KEY.trim();
   const f = resolve(root, 'tools/api-key.txt');
   if (existsSync(f)) return readFileSync(f, 'utf8').trim();
@@ -31,11 +31,31 @@ function key() {
   process.exit(1);
 }
 
+/* fetch с таймаутом и повторами: gptunnel бывает недоступен на секунды */
+async function fetchR(url, opts, tries = 6) {
+  let last;
+  for (let i = 0; i < tries; i++) {
+    try {
+      const c = new AbortController();
+      const to = setTimeout(() => c.abort(), 30000);
+      const r = await fetch(url, { ...opts, signal: c.signal });
+      clearTimeout(to);
+      return r;
+    } catch (e) {
+      last = e;
+      const d = 4000 * (i + 1) * (i + 1);
+      console.error(`\nсеть: ${e.code || e.message}; повтор ${i + 1}/${tries} через ${Math.round(d / 1000)}с`);
+      await new Promise(z => setTimeout(z, d));
+    }
+  }
+  throw last;
+}
+
 async function api(path, opts) {
-  const r = await fetch(API + path, {
+  const r = await fetchR(API + path, {
     ...opts,
     headers: {
-      'Authorization': key(),
+      'Authorization': await key(),
       'Content-Type': 'application/json',
       ...(opts && opts.headers || {})
     }
@@ -70,11 +90,11 @@ async function runTask(body) {
 }
 
 async function download(urls, out) {
-  const res = await fetch(urls[0].url);
+  const res = await fetchR(urls[0].url);
   if (!res.ok) throw new Error('скачивание ' + res.status);
   const buf = Buffer.from(await res.arrayBuffer());
   writeFileSync(resolve(root, out), buf);
-  console.log(`✓ сохранено ${out} (${(buf.length / 1048576).toFixed(1)} МБ) — ссылки GPTunnel живут 48 ч, файл уже локально`);
+  console.log(`\n✓ сохранено ${out} (${(buf.length / 1048576).toFixed(1)} МБ) — файл уже локально`);
 }
 
 /* --- аргументы вида --key value --- */

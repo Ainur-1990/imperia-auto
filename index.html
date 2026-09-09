@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ИМПЕРИЯ АВТО, официальный дилер VOYAH и LI AUTO</title>
-<meta name="description" content="Дилерский центр электромобилей и range-гибридов VOYAH и LI AUTO. В наличии FREE, L9, ZHUIGUANG, DREAM. Трейд-ин +300 000 ₽, кредит от 0,01%, тест-драйв в день обращения.">
+<meta name="description" content="Дилерский центр VOYAH и LI AUTO. Реалистичный облёт каждого автомобиля мышью: FREE, L9, ZHUIGUANG, DREAM. Трейд-ин +300 000 ₽, кредит от 0,01%, тест-драйв в день обращения.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080b'/%3E%3Cpath d='M8 22 L16 9 L24 22 M12.5 17.5 h7' stroke='%23d8b077' stroke-width='2.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/manrope-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
@@ -23,8 +23,9 @@
   <p class="loader__hint">прогреваем студийный свет</p>
 </div>
 
-<!-- ================= 3D СЦЕНА ================= -->
-<canvas id="stage" aria-hidden="true"></canvas>
+<!-- ================= СЦЕНА НА РЕАЛЬНЫХ КАДРАХ ================= -->
+<canvas id="seqStage" aria-hidden="true"></canvas>
+<div class="seqring" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
@@ -91,7 +92,7 @@
       </div>
       <div class="hint" aria-hidden="true">
         <svg class="hint__arr" width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v11M3.5 9 8 13.5 12.5 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p>Листайте: <b>LI AUTO L9</b> уже выезжает на сцену</p>
+        <p>Ведите мышью вдоль авто и листайте: дальше выезжает <b>LI AUTO L9</b></p>
       </div>
     </div>
   </section>
@@ -108,11 +109,7 @@
 бензин в дальней дороге. Заряжаться можно вообще без розетки.</p>
         <div class="card__row rv" data-d="4">
           <div class="price"><small>от</small><b>8 990 000</b><small>₽</small></div>
-          <div class="swatches" data-car="1" role="group" aria-label="Цвет кузова">
-            <button class="sw on" style="--c:#dfe3e6" data-c="#dfe3e6" aria-label="Ледяной жемчуг"></button>
-            <button class="sw" style="--c:#15161a" data-c="#15161a" aria-label="Чёрный агат"></button>
-            <button class="sw" style="--c:#2c3a33" data-c="#2c3a33" aria-label="Зелёный хвойный"></button>
-          </div>
+          <p class="card__colors rv" data-d="5">цвета в наличии: жемчуг · агат · хвоя</p>
         </div>
         <a class="btn btn--pri btn--card rv" data-d="5" href="#testdrive" data-mag><span>Тест-драйв L9</span></a>
       </div>
@@ -146,11 +143,7 @@
       <div class="card card--bc">
         <div class="card__row rv" data-d="5">
           <div class="price"><small>от</small><b>7 550 000</b><small>₽</small></div>
-          <div class="swatches" data-car="2" role="group" aria-label="Цвет кузова">
-            <button class="sw on" style="--c:#7a1420" data-c="#7a1420" aria-label="Красный закат"></button>
-            <button class="sw" style="--c:#101318" data-c="#101318" aria-label="Полночь"></button>
-            <button class="sw" style="--c:#b9bec4" data-c="#b9bec4" aria-label="Серебро"></button>
-          </div>
+          <p class="card__colors">цвета в наличии: закат · полночь · серебро</p>
         </div>
         <a class="btn btn--pri btn--card rv" data-d="6" href="#testdrive" data-mag><span>Тест-драйв</span></a>
       </div>
@@ -173,11 +166,7 @@
         </ul>
         <div class="card__row rv" data-d="4">
           <div class="price"><small>от</small><b>8 490 000</b><small>₽</small></div>
-          <div class="swatches" data-car="3" role="group" aria-label="Цвет кузова">
-            <button class="sw on" style="--c:#17233f" data-c="#17233f" aria-label="Полночная синь"></button>
-            <button class="sw" style="--c:#dfdcd2" data-c="#dfdcd2" aria-label="Жемчуг"></button>
-            <button class="sw" style="--c:#4a3320" data-c="#4a3320" aria-label="Виски"></button>
-          </div>
+          <p class="card__colors rv" data-d="5">цвета в наличии: синь · жемчуг · виски</p>
         </div>
         <a class="btn btn--pri btn--card rv" data-d="5" href="#testdrive" data-mag><span>Тест-драйв</span></a>
       </div>
@@ -353,9 +342,9 @@
 
 </main>
 
-<script src="vendor/three.min.js"></script>
-<script src="js/scene.js"></script>
 <script src="media/cinema/manifest.js"></script>
+<script src="media/turn/all.js"></script>
+<script src="js/stage.js"></script>
 <script src="js/cinema.js"></script>
 <script src="js/app.js"></script>
 
