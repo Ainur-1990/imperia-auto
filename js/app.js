@@ -253,6 +253,42 @@ $$('#mnav a').forEach(a => a.addEventListener('click', () => {
   burger.setAttribute('aria-expanded', 'false');
 }));
 
+/* ---------------- галерея: паралакс фото ---------------- */
+(function initGallery() {
+  const panels = $$('.gpanel');
+  if (!panels.length) return;
+  const state = panels.map(p => ({
+    el: p,
+    img: p.querySelector('img'),
+    cap: p.querySelector('.gpanel__cap'),
+    speed: parseFloat(p.dataset.speed || '-0.12'),
+    mx: 0, my: 0
+  }));
+  if (FINE && !RM) {
+    addEventListener('pointermove', e => {
+      const nx = (e.clientX / W) * 2 - 1;
+      const ny = (e.clientY / H) * 2 - 1;
+      state.forEach(s => { s.mx = nx; s.my = ny; });
+    }, { passive: true });
+  }
+  let cx = 0, cy = 0;
+  function galleryFrame() {
+    cx = FINE && !RM ? lerp(cx, state[0].mx, 0.06) : 0;
+    cy = FINE && !RM ? lerp(cy, state[0].my, 0.06) : 0;
+    state.forEach(s => {
+      const r = s.el.getBoundingClientRect();
+      if (r.bottom < -80 || r.top > H + 80) return;
+      const center = r.top + r.height / 2 - H / 2;
+      const y = RM ? 0 : center * s.speed;
+      s.img.style.transform =
+        'translateY(' + y.toFixed(1) + 'px) translateX(' + (cx * 10).toFixed(1) + 'px) scale(1.06)';
+      if (s.cap) s.cap.style.transform =
+        'translateY(' + (RM ? 0 : -y * 0.18).toFixed(1) + 'px)';
+    });
+  }
+  setInterval(galleryFrame, RM ? 400 : 33);
+})();
+
 /* ---------------- форма ---------------- */
 const form = $('#tdForm');
 form.addEventListener('submit', e => {
