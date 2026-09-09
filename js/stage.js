@@ -104,6 +104,20 @@ SeqStage.prototype.setPointer = function (nx, ny) {
   this.pointer.lastMove = this.time;
 };
 SeqStage.prototype.setReduced = function (b) { this.reduced = b; };
+/* прогресс кадров активного и следующего сета (0..1) */
+SeqStage.prototype.progress = function () {
+  var act = this._lastAct || 0;
+  var list = [this.players[this.keys[act]]];
+  var nx = this.players[this.keys[Math.min(act + 1, 3)]];
+  if (nx) list.push(nx);
+  var ld = 0, tot = 0;
+  for (var i = 0; i < list.length; i++) {
+    if (!list[i]) continue;
+    ld += list[i].loaded;
+    tot += list[i].man.count;
+  }
+  return tot ? ld / tot : 0;
+};
 SeqStage.prototype.intro = function () {
   if (this.introV >= 1) return;
   this.introOn = true;
@@ -132,8 +146,9 @@ SeqStage.prototype.tick = function (dt, sy, tops, vh, outroTop) {
   /* активная пара */
   var act = 0;
   for (var a = 0; a < 4; a++) if (sy >= tops[a] - 1) act = a;
-  this.loadNext(act + 1);
   var uCur = act < 3 ? u[act] : uOut;
+  /* следующий сет качаем только когда переход реально начался */
+  if (uCur > 0.02 && act < 3) this.loadNext(act + 1);
 
   /* ракурс: мышь + тихий дрейф при простое */
   if (t - this.pointer.lastMove > 4 && !this.reduced) {
@@ -169,7 +184,7 @@ SeqStage.prototype.tick = function (dt, sy, tops, vh, outroTop) {
     var zoomIn = (1.07 - 0.07 * kIn) * 1.09;
     pNext.draw(ctx, W, H, angle, introA * kIn, zoomIn, ox);
   }
-  /* финал: после последней машины сцена уходит в темноту */
+  this._lastAct = act;
   return act;
 };
 

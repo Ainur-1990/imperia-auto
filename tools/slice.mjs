@@ -11,7 +11,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const [, , inArg, nArg = '120', wArg = '1600', outArg = 'media/cinema'] = process.argv;
+const [, , inArg, nArg = '120', wArg = '1600', outArg = 'media/cinema', qArg = '72'] = process.argv;
 
 if (!inArg) {
   console.error('用法: node tools/slice.mjs <in.mp4> [кадров=120] [ширина=1600] [outdir=media/cinema]');
@@ -21,6 +21,7 @@ const src = resolve(root, inArg);
 const outDir = resolve(root, outArg);
 const frames = parseInt(nArg, 10);
 const width = parseInt(wArg, 10);
+const quality = parseInt(qArg, 10);
 
 const dur = parseFloat(execFileSync('ffprobe', [
   '-v', 'error', '-select_streams', 'v:0',
@@ -36,7 +37,7 @@ console.log(`режу ${src} → ${frames} кадров, ${width}px, клип ${
 execFileSync('ffmpeg', [
   '-y', '-v', 'error', '-i', src,
   '-vf', `fps=${frames / dur},scale=${width}:-2`,
-  '-c:v', 'libwebp', '-lossless', '0', '-q:v', '72', '-compression_level', '4',
+  '-c:v', 'libwebp', '-lossless', '0', '-q:v', String(quality), '-compression_level', '4',
   resolve(outDir, 'frame-%03d.webp')
 ], { stdio: 'inherit' });
 

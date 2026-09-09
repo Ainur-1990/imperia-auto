@@ -174,6 +174,23 @@ function frame(now) {
     cursorEl.style.transform = 'translate(' + cursor.x + 'px,' + cursor.y + 'px)';
   }
 
+  /* прогресс кадров сцены */
+  if (show) {
+    const seqLoadEl = $('#seqLoad');
+    const seqTxt = seqLoadEl.querySelector('span');
+    let lastPct = -1;
+    const updSeq = () => {
+      const p = show.progress();
+      const pct = Math.round(p * 100);
+      if (pct === lastPct) return;
+      lastPct = pct;
+      seqTxt.textContent = 'кадры ' + pct + '%';
+      seqLoadEl.classList.toggle('on', pct < 100);
+    };
+    updSeq();
+    setInterval(updSeq, 500);
+  }
+
   /* прелоадер */
   if (!loaded) {
     const p = (progress.fonts + progress.scene + progress.time) / 3;

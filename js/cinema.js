@@ -31,10 +31,10 @@ function pad(n) {
   return s;
 }
 
-/* загрузка кадров: очередь с конверсией 3 */
+/* загрузка кадров: очередь с конверсией 3, старт только у секции */
 var queue = [];
-for (var i = 0; i < M.count; i++) queue.push(i);
 var active = 0;
+var pumpOn = false;
 function pump() {
   while (active < 3 && queue.length) {
     var idx = queue.shift();
@@ -58,7 +58,13 @@ function pump() {
     })(idx);
   }
 }
-pump();
+/* не грузим кино, пока секция не близко (тяжёлый сет качается по требованию) */
+var nearObs = new IntersectionObserver(function (es) {
+  if (es[0].isIntersecting) {
+    if (!pumpOn) { pumpOn = true; for (var i = 0; i < M.count; i++) queue.push(i); pump(); }
+  }
+}, { rootMargin: '120% 0px' });
+nearObs.observe(sec);
 
 function resize() {
   dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -90,6 +96,20 @@ function frame() {
   requestAnimationFrame(frame);
   var r = sec.getBoundingClientRect();
   var vh = window.innerHeight;
+  /* далеко от секции — не работаем (и стартуем загрузку при подходе) */
+  if (r.top > vh * 2.2 || r.bottom < -vh * 1.2) {
+    if (!pumpOn && r.top < vh * 2.4) {
+      pumpOn = true;
+      for (var q = 0; q < M.count; q++) queue.push(q);
+      pump();
+    }
+    return;
+  }
+  if (!pumpOn) {
+    pumpOn = true;
+    for (var s = 0; s < M.count; s++) queue.push(s);
+    pump();
+  }
   /* прогресс по «закреплённому» диапазону: 0 — секция прилипла, 1 — уехала */
   var p = Math.max(0, Math.min(1, -r.top / (r.height - vh)));
   target = p * (M.count - 1);
